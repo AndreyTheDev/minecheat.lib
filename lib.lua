@@ -1,65 +1,100 @@
 -- minecheat.lib
 
 local MineCheatLib = {}
-MineCheatLib.__index = MineCheatLib
+local player = game.Players.LocalPlayer
 
-function MineCheatLib:CreateWindow(name, color)
-    local window = Instance.new("ScreenGui")
-    window.Name = "window"
-    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    window.ResetOnSpawn = false
+function MineCheatLib:CreateLib(name, color)
+    local lib = Instance.new("ScreenGui")
+    lib.Name = name
+    lib.Parent = player:WaitForChild("PlayerGui")
+    lib.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    local mainFrame = Instance.new("Frame", window)
-    mainFrame.BackgroundColor3 = color or Color3.fromRGB(0, 0, 0)
-    mainFrame.Size = UDim2.new(0, 500, 0, 400)
-    mainFrame.Position = UDim2.new(0.5, -250, 0.5, -200)
-    mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    local hacks = Instance.new("Folder", lib)
+    hacks.Name = "Hacks"
 
-    local title = Instance.new("TextLabel", mainFrame)
-    title.Text = name
-    title.Size = UDim2.new(1, 0, 0, 50)
-    title.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    title.TextColor3 = Color3.new(1, 1, 1)
-    title.TextScaled = true
+    local lol = Instance.new("Frame", hacks)
+    lol.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    lol.BackgroundTransparency = 1
+    lol.BorderSizePixel = 0
+    lol.Size = UDim2.new(0, 1502, 0, 638)
 
-    self.tabs = {}
-    self.currentTab = nil
-    self.window = window
-    return self
-end
+    local tab = Instance.new("Frame", lol)
+    tab.BackgroundColor3 = color or Color3.fromRGB(90, 150, 69)
+    tab.BorderSizePixel = 0
+    tab.Position = UDim2.new(0.0479735322, 0, 0.0966666639, 0)
+    tab.Size = UDim2.new(0, 129, 0, 27)
 
-function MineCheatLib:CreateTab(title)
-    local tab = Instance.new("Frame")
-    tab.Name = title
-    tab.Parent = self.window
+    local textButton = Instance.new("TextButton", tab)
+    textButton.BackgroundTransparency = 1
+    textButton.Position = UDim2.new(0.782945752, 0, 0.0370370373, 0)
+    textButton.Rotation = 270
+    textButton.Size = UDim2.new(0, 28, 0, 26)
+    textButton.Font = Enum.Font.Ubuntu
+    textButton.Text = ">"
+    textButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    textButton.TextScaled = true
 
-    if self.currentTab then
-        self.currentTab.Visible = false
-    end
+    local textLabel = Instance.new("TextLabel", tab)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Size = UDim2.new(0, 96, 0, 27)
+    textLabel.Font = Enum.Font.Ubuntu
+    textLabel.Text = "Tab"
+    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    textLabel.TextSize = 20
 
-    tab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    tab.Size = UDim2.new(1, 0, 1, 0)
-    tab.Visible = true
-    self.currentTab = tab
+    local content = Instance.new("Frame", tab)
+    content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    content.BackgroundTransparency = 0.25
+    content.BorderSizePixel = 0
+    content.Position = UDim2.new(0, 0, 1, 0)
+    content.Size = UDim2.new(0, 129, 0, 28)
 
-    self.tabs[title] = tab
+    local frame = Instance.new("Frame", content)
+    frame.BackgroundColor3 = Color3.fromRGB(106, 106, 106)
+    frame.BorderSizePixel = 0
+    frame.Position = UDim2.new(0.970000029, 0, 0.109999999, 0)
+    frame.Size = UDim2.new(0, 2, 0, 22)
 
-    return tab
-end
+    local button = Instance.new("TextButton", frame)
+    button.BackgroundTransparency = 1
+    button.Position = UDim2.new(-59.5, 0, -0.14000009, 0)
+    button.Size = UDim2.new(0, 121, 0, 28)
+    button.Font = Enum.Font.Ubuntu
+    button.Text = "Button"
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 14
 
-function MineCheatLib:CreateButton(tab, buttonName, callback)
-    local button = Instance.new("TextButton", tab)
-    button.Text = buttonName
-    button.Size = UDim2.new(0, 200, 0, 50)
-    button.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    button.TextColor3 = Color3.new(1, 1, 1)
-    button.Position = UDim2.new(0.5, -100, #tab:GetChildren() * 0.1, 10) -- Для вертикального размещения
+    -- Scripts
+    local enabled = false
 
-    button.MouseButton1Click:Connect(function()
-        if callback then
-            callback()
-        end
+    textButton.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        content.Visible = enabled
+        textButton.Rotation = enabled and 90 or 270
     end)
+
+    return {
+        CreateTab = function(tabName)
+            local newTab = Instance.new("Frame", lol)
+            newTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            newTab.Size = UDim2.new(0, 129, 0, 28)
+            newTab.Name = tabName
+
+            -- Добавление кнопок в новую вкладку можно реализовать здесь
+            return {
+                CreateButton = function(buttonName)
+                    local newButton = Instance.new("TextButton", newTab)
+                    newButton.Size = UDim2.new(0, 121, 0, 28)
+                    newButton.Font = Enum.Font.Ubuntu
+                    newButton.Text = buttonName
+                    newButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    newButton.TextSize = 14
+                    newButton.BackgroundTransparency = 1
+                    return newButton
+                end
+            }
+        end
+    }
 end
 
 return MineCheatLib
