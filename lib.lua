@@ -40,6 +40,9 @@ function MineCheatLib.createTab(parent, tabName)
     tabFrame.Parent = parent
     tabFrame.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
     tabFrame.Size = UDim2.new(0, 129, 0, 27)
+    tabFrame.Active = true
+    tabFrame.Selectable = true
+    tabFrame.Draggable = true
 
     -- Установка позиции таба
     tabFrame.Position = UDim2.new(0.048, 0, 0, tabCount * 35) -- Расположение табов друг под другом
