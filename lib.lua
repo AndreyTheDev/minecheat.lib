@@ -122,7 +122,7 @@ function MineCheatLib:CreateWindow(name, color)
 
     return {
         CreateTab = function(name)
-            local newTab = Instance.new("Frame", lol) -- Add this line
+            local newTab = Instance.new("Frame", lol)
             newTab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             newTab.Size = UDim2.new(0, 200, 0, 100)
             newTab.Name = name
