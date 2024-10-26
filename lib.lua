@@ -1,116 +1,108 @@
--- minecheat.lib Interface Library
+-- minecheat.lib
 
 local MineCheatLib = {}
+local Tabs = {}
 
-local tabCount = 0 -- Счетчик табов для установки их позиций
-
--- Создание интерфейса для окна с табами и контентом
-function MineCheatLib.createMainUI(size)
+function MineCheatLib:CreateLib(windowName, windowColor)
     local minecheats = Instance.new("ScreenGui")
-    local hacksFolder = Instance.new("Folder")
-    local mainFrame = Instance.new("Frame")
+    local Hacks = Instance.new("Folder")
+    local lol = Instance.new("Frame")
 
-    -- Настройки основного интерфейса
+    -- Properties
     minecheats.Name = "minecheats"
     minecheats.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     minecheats.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    hacksFolder.Name = "Hacks"
-    hacksFolder.Parent = minecheats
 
-    mainFrame.Name = "mainFrame"
-    mainFrame.Parent = hacksFolder
-    mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    mainFrame.BackgroundTransparency = 1
-    mainFrame.Position = UDim2.new(0.05, 0, 0.1, 0) -- Позиция по умолчанию
-    mainFrame.Size = size or UDim2.new(0, 1502, 0, 638)
+    Hacks.Name = "Hacks"
+    Hacks.Parent = minecheats
 
-    return mainFrame
+    lol.Name = "lol"
+    lol.Parent = Hacks
+    lol.BackgroundColor3 = windowColor or Color3.fromRGB(90, 150, 69)
+    lol.BackgroundTransparency = 1.000
+    lol.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    lol.Size = UDim2.new(0, 1502, 0, 638)
+
+    return { AddTab = function(self, tabName)
+        return self:CreateTab(tabName, lol)
+    end }
 end
 
--- Создание таба с кнопкой и содержимым
-function MineCheatLib.createTab(parent, tabName)
-    local tabFrame = Instance.new("Frame")
-    local tabButton = Instance.new("TextButton")
-    local tabLabel = Instance.new("TextLabel")
-    local contentFrame = Instance.new("Frame")
-    local buttonFrame = Instance.new("Frame")
+function MineCheatLib:CreateTab(tabName, parentFrame)
+    local tab = Instance.new("Frame")
+    local TextButton = Instance.new("TextButton")
+    local TextLabel = Instance.new("TextLabel")
+    local content = Instance.new("Frame")
+    
+    tab.Name = tabName
+    tab.Parent = parentFrame
+    tab.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
+    tab.BackgroundTransparency = 0.100
+    tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tab.Size = UDim2.new(0, 129, 0, 27)
 
-    -- Настройки фрейма таба
-    tabFrame.Name = tabName
-    tabFrame.Parent = parent
-    tabFrame.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
-    tabFrame.Size = UDim2.new(0, 129, 0, 27)
-    tabFrame.Active = true
-    tabFrame.Selectable = true
-    tabFrame.Draggable = true
+    TextButton.Parent = tab
+    TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextButton.BackgroundTransparency = 1.000
+    TextButton.Position = UDim2.new(0.782945752, 0, 0.0370370373, 0)
+    TextButton.Rotation = 270.000
+    TextButton.Size = UDim2.new(0, 28, 0, 26)
+    TextButton.Font = Enum.Font.Ubuntu
+    TextButton.Text = ">"
+    TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextButton.TextScaled = true
+    TextButton.TextSize = 14.000
 
-    -- Установка позиции таба
-    tabFrame.Position = UDim2.new(0.048, 0, 0, tabCount * 35) -- Расположение табов друг под другом
-    tabCount = tabCount + 1 -- Увеличиваем счетчик табов
+    TextLabel.Parent = tab
+    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.BackgroundTransparency = 1.000
+    TextLabel.Size = UDim2.new(0, 96, 0, 27)
+    TextLabel.Font = Enum.Font.Ubuntu
+    TextLabel.Text = tabName
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.TextSize = 20.000
 
-    -- Настройки кнопки раскрытия
-    tabButton.Parent = tabFrame
-    tabButton.BackgroundTransparency = 1
-    tabButton.Position = UDim2.new(0.783, 0, 0.037, 0)
-    tabButton.Rotation = 270
-    tabButton.Size = UDim2.new(0, 28, 0, 26)
-    tabButton.Font = Enum.Font.Ubuntu
-    tabButton.Text = ">"
-    tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    tabButton.TextScaled = true
+    content.Name = "content"
+    content.Parent = tab
+    content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    content.BackgroundTransparency = 0.250
+    content.Position = UDim2.new(0, 0, 1, 0)
+    content.Size = UDim2.new(1, 0, 0, 0)
 
-    -- Настройки текста
-    tabLabel.Parent = tabFrame
-    tabLabel.BackgroundTransparency = 1
-    tabLabel.Size = UDim2.new(0, 96, 0, 27)
-    tabLabel.Font = Enum.Font.Ubuntu
-    tabLabel.Text = tabName
-    tabLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    tabLabel.TextSize = 20
+    local frame1 = Instance.new("Frame", content)
+    frame1.BackgroundColor3 = Color3.fromRGB(106, 106, 106)
+    frame1.Size = UDim2.new(0, 2, 0, 22)
+    frame1.Position = UDim2.new(0.970000029, 0, 0.109999999, 0)
 
-    -- Настройки содержимого таба
-    contentFrame.Name = "content" .. tabName
-    contentFrame.Parent = tabFrame
-    contentFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    contentFrame.BackgroundTransparency = 0.25
-    contentFrame.Position = UDim2.new(0, 0, 1, 0)
-    contentFrame.Size = UDim2.new(0, 129, 0, 28)
+    local button1 = Instance.new("TextButton", frame1)
+    button1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    button1.BackgroundTransparency = 1.000
+    button1.Size = UDim2.new(0, 121, 0, 28)
+    button1.Font = Enum.Font.Ubuntu
+    button1.Text = "button"
+    button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button1.TextSize = 14.000
 
-    buttonFrame.Parent = contentFrame
-    buttonFrame.BackgroundColor3 = Color3.fromRGB(106, 106, 106)
-    buttonFrame.Position = UDim2.new(0.97, 0, 0.11, 0)
-    buttonFrame.Size = UDim2.new(0, 2, 0, 22)
-
-    -- Скрипт для передвижения табов
-    local dragging = false
-    local dragStart, startPos
-
-    local function update(input)
-        local delta = input.Position - dragStart
-        tabFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-
-    tabFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = tabFrame.Position
-
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
+    -- Toggle visibility script
+    local enabled = false
+    TextButton.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        content.Visible = enabled
+        TextButton.Rotation = enabled and 90 or 270
     end)
 
-    tabFrame.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            update(input)
-        end
-    end)
+    return { AddButton = function(self, buttonText)
+        local newButton = Instance.new("TextButton", content)
+        newButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        newButton.BackgroundTransparency = 1.000
+        newButton.Size = UDim2.new(1, 0, 0, 28)
+        newButton.Font = Enum.Font.Ubuntu
+        newButton.Text = buttonText
+        newButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        newButton.TextSize = 14.000
 
-    return tabFrame
+        return newButton
+    end }
 end
 
 return MineCheatLib
