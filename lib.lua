@@ -2,7 +2,7 @@
 
 local MineCheatLib = {}
 
-function MineCheatLib:CreateLib(name, color)
+function MineCheatLib:CreateLib(name)
     local minecheats = Instance.new("ScreenGui")
     local Hacks = Instance.new("Folder")
     local lol = Instance.new("Frame")
@@ -28,15 +28,15 @@ function MineCheatLib:CreateLib(name, color)
 end
 
 function MineCheatLib:CreateTab(tabName)
-    local tab1 = Instance.new("Frame")
-    tab1.Parent = self.windowFrame
-    tab1.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
-    tab1.BackgroundTransparency = 0.1
-    tab1.BorderSizePixel = 0
-    tab1.Size = UDim2.new(0, 129, 0, 27)
+    local tab = Instance.new("Frame")
+    tab.Parent = self.windowFrame
+    tab.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
+    tab.BackgroundTransparency = 0.1
+    tab.BorderSizePixel = 0
+    tab.Size = UDim2.new(0, 129, 0, 27)
 
     local TextButton = Instance.new("TextButton")
-    TextButton.Parent = tab1
+    TextButton.Parent = tab
     TextButton.BackgroundTransparency = 1
     TextButton.Size = UDim2.new(0, 28, 0, 26)
     TextButton.Font = Enum.Font.Ubuntu
@@ -44,7 +44,7 @@ function MineCheatLib:CreateTab(tabName)
     TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     local TextLabel = Instance.new("TextLabel")
-    TextLabel.Parent = tab1
+    TextLabel.Parent = tab
     TextLabel.BackgroundTransparency = 1
     TextLabel.Size = UDim2.new(0, 96, 0, 27)
     TextLabel.Font = Enum.Font.Ubuntu
@@ -53,14 +53,14 @@ function MineCheatLib:CreateTab(tabName)
 
     local contentFrame = Instance.new("Frame")
     contentFrame.Name = "Content"
-    contentFrame.Parent = tab1
+    contentFrame.Parent = tab
     contentFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     contentFrame.BackgroundTransparency = 0.25
     contentFrame.Size = UDim2.new(0, 129, 0, 28)
 
-    tab1.Visible = false -- скрываем контент по умолчанию
+    contentFrame.Visible = false -- скрываем контент по умолчанию
 
-    table.insert(self.tabs, {tab = tab1, content = contentFrame})
+    table.insert(self.tabs, {tab = tab, content = contentFrame})
 
     local function toggleContent()
         contentFrame.Visible = not contentFrame.Visible
