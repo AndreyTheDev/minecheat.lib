@@ -3,7 +3,7 @@
 local MineCheatLib = {}
 
 -- Создание интерфейса для окна с табами и контентом
-function MineCheatLib.createMainUI()
+function MineCheatLib.createMainUI(position, size)
     local minecheats = Instance.new("ScreenGui")
     local hacksFolder = Instance.new("Folder")
     local mainFrame = Instance.new("Frame")
@@ -19,7 +19,8 @@ function MineCheatLib.createMainUI()
     mainFrame.Parent = hacksFolder
     mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     mainFrame.BackgroundTransparency = 1
-    mainFrame.Size = UDim2.new(0, 1502, 0, 638)
+    mainFrame.Position = position or UDim2.new(0.05, 0, 0.1, 0) -- Позиция по умолчанию или переданная пользователем
+    mainFrame.Size = size or UDim2.new(0, 1502, 0, 638)
 
     return mainFrame
 end
@@ -37,6 +38,7 @@ function MineCheatLib.createTab(parent, tabName)
     tabFrame.Parent = parent
     tabFrame.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
     tabFrame.Size = UDim2.new(0, 129, 0, 27)
+    tabFrame.Position = UDim2.new(0, 0, 0, (#parent:GetChildren() - 1) * 35) -- Расположение табов друг под другом
 
     -- Настройки кнопки раскрытия
     tabButton.Parent = tabFrame
@@ -70,6 +72,35 @@ function MineCheatLib.createTab(parent, tabName)
     buttonFrame.BackgroundColor3 = Color3.fromRGB(106, 106, 106)
     buttonFrame.Position = UDim2.new(0.97, 0, 0.11, 0)
     buttonFrame.Size = UDim2.new(0, 2, 0, 22)
+
+    -- Скрипт для передвижения табов
+    local dragging = false
+    local dragStart, startPos
+
+    local function update(input)
+        local delta = input.Position - dragStart
+        tabFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+
+    tabFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = tabFrame.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    tabFrame.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            update(input)
+        end
+    end)
 
     return tabFrame
 end
