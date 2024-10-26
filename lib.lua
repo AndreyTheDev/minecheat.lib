@@ -2,8 +2,10 @@
 
 local MineCheatLib = {}
 
+local tabCount = 0 -- Счетчик табов для установки их позиций
+
 -- Создание интерфейса для окна с табами и контентом
-function MineCheatLib.createMainUI(position, size)
+function MineCheatLib.createMainUI(size)
     local minecheats = Instance.new("ScreenGui")
     local hacksFolder = Instance.new("Folder")
     local mainFrame = Instance.new("Frame")
@@ -19,7 +21,7 @@ function MineCheatLib.createMainUI(position, size)
     mainFrame.Parent = hacksFolder
     mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     mainFrame.BackgroundTransparency = 1
-    mainFrame.Position = position or UDim2.new(0.05, 0, 0.1, 0) -- Позиция по умолчанию или переданная пользователем
+    mainFrame.Position = UDim2.new(0.05, 0, 0.1, 0) -- Позиция по умолчанию
     mainFrame.Size = size or UDim2.new(0, 1502, 0, 638)
 
     return mainFrame
@@ -38,7 +40,10 @@ function MineCheatLib.createTab(parent, tabName)
     tabFrame.Parent = parent
     tabFrame.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
     tabFrame.Size = UDim2.new(0, 129, 0, 27)
-    tabFrame.Position = UDim2.new(0.048, 0, 0, (#parent:GetChildren() - 1) * 35) -- Расположение табов друг под другом
+
+    -- Установка позиции таба
+    tabFrame.Position = UDim2.new(0.048, 0, 0, tabCount * 35) -- Расположение табов друг под другом
+    tabCount = tabCount + 1 -- Увеличиваем счетчик табов
 
     -- Настройки кнопки раскрытия
     tabButton.Parent = tabFrame
