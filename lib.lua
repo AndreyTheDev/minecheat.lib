@@ -1,90 +1,77 @@
-local library = {}
+-- minecheat.lib Interface Library
 
--- Инициализация GUI и его элементов
-function library:CreateWindow(scriptName)
+local MineCheatLib = {}
+
+-- Создание интерфейса для окна с табами и контентом
+function MineCheatLib.createMainUI()
     local minecheats = Instance.new("ScreenGui")
+    local hacksFolder = Instance.new("Folder")
+    local mainFrame = Instance.new("Frame")
+
+    -- Настройки основного интерфейса
     minecheats.Name = "minecheats"
     minecheats.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     minecheats.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    hacksFolder.Name = "Hacks"
+    hacksFolder.Parent = minecheats
 
-    local Hacks = Instance.new("Folder", minecheats)
-    Hacks.Name = "skibidfolder"
+    mainFrame.Name = "mainFrame"
+    mainFrame.Parent = hacksFolder
+    mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    mainFrame.BackgroundTransparency = 1
+    mainFrame.Size = UDim2.new(0, 1502, 0, 638)
 
-    local lol = Instance.new("Frame", Hacks)
-    lol.Name = "lol"
-    lol.BackgroundTransparency = 1
-    lol.Size = UDim2.new(0, 1502, 0, 638)
-
-    self.gui = minecheats
-    self.mainFrame = lol
-    print("Script initialized:", scriptName)
+    return mainFrame
 end
 
--- Создание новой вкладки
-function library:NewTab(title)
-    local tab = Instance.new("Frame", self.mainFrame)
-    tab.Name = "tab"
-    tab.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
-    tab.Size = UDim2.new(0, 129, 0, 27)
+-- Создание таба с кнопкой и содержимым
+function MineCheatLib.createTab(parent, tabName)
+    local tabFrame = Instance.new("Frame")
+    local tabButton = Instance.new("TextButton")
+    local tabLabel = Instance.new("TextLabel")
+    local contentFrame = Instance.new("Frame")
+    local buttonFrame = Instance.new("Frame")
 
-    local textLabel = Instance.new("TextLabel", tab)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Size = UDim2.new(0, 96, 0, 27)
-    textLabel.Font = Enum.Font.Ubuntu
-    textLabel.Text = title
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.TextSize = 20
+    -- Настройки фрейма таба
+    tabFrame.Name = tabName
+    tabFrame.Parent = parent
+    tabFrame.BackgroundColor3 = Color3.fromRGB(90, 150, 69)
+    tabFrame.Size = UDim2.new(0, 129, 0, 27)
 
-    local toggleButton = Instance.new("TextButton", tab)
-    toggleButton.BackgroundTransparency = 1
-    toggleButton.Size = UDim2.new(0, 28, 0, 26)
-    toggleButton.Position = UDim2.new(0.78, 0, 0.04, 0)
-    toggleButton.Text = ">"
-    toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggleButton.Rotation = 270
+    -- Настройки кнопки раскрытия
+    tabButton.Parent = tabFrame
+    tabButton.BackgroundTransparency = 1
+    tabButton.Position = UDim2.new(0.783, 0, 0.037, 0)
+    tabButton.Rotation = 270
+    tabButton.Size = UDim2.new(0, 28, 0, 26)
+    tabButton.Font = Enum.Font.Ubuntu
+    tabButton.Text = ">"
+    tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    tabButton.TextScaled = true
 
-    local content = Instance.new("Frame", tab)
-    content.Name = "content"
-    content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    content.BackgroundTransparency = 0.25
-    content.Size = UDim2.new(0, 129, 0, 28)
-    content.Position = UDim2.new(0, 0, 1, 0)
-    content.Visible = false
+    -- Настройки текста
+    tabLabel.Parent = tabFrame
+    tabLabel.BackgroundTransparency = 1
+    tabLabel.Size = UDim2.new(0, 96, 0, 27)
+    tabLabel.Font = Enum.Font.Ubuntu
+    tabLabel.Text = tabName
+    tabLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    tabLabel.TextSize = 20
 
-    toggleButton.MouseButton1Click:Connect(function()
-        content.Visible = not content.Visible
-        toggleButton.Rotation = content.Visible and 90 or 270
-    end)
+    -- Настройки содержимого таба
+    contentFrame.Name = "content" .. tabName
+    contentFrame.Parent = tabFrame
+    contentFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    contentFrame.BackgroundTransparency = 0.25
+    contentFrame.Position = UDim2.new(0, 0, 1, 0)
+    contentFrame.Size = UDim2.new(0, 129, 0, 28)
 
-    return content
+    buttonFrame.Parent = contentFrame
+    buttonFrame.BackgroundColor3 = Color3.fromRGB(106, 106, 106)
+    buttonFrame.Position = UDim2.new(0.97, 0, 0.11, 0)
+    buttonFrame.Size = UDim2.new(0, 2, 0, 22)
+
+    return tabFrame
 end
 
--- Создание кнопки внутри вкладки
-function library:NewButton(tab, buttonText, callback)
-    local button = Instance.new("TextButton", tab)
-    button.Size = UDim2.new(0, 121, 0, 28)
-    button.Font = Enum.Font.Ubuntu
-    button.Text = buttonText
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.BackgroundTransparency = 1
-    button.TextXAlignment = Enum.TextXAlignment.Left
-    button.MouseButton1Click:Connect(callback)
-end
-
--- Создание текста внутри вкладки
-function library:NewText(tab, text)
-    local textLabel = Instance.new("TextLabel", tab)
-    textLabel.Size = UDim2.new(0, 121, 0, 28)
-    textLabel.Font = Enum.Font.Ubuntu
-    textLabel.Text = text
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.BackgroundTransparency = 1
-    textLabel.TextXAlignment = Enum.TextXAlignment.Left
-end
-
--- Специальная команда для вывода в консоль
-function library:NewSigmaSkibidi()
-    print("Minecraft cheats sigma skibidi lib by AndreyTheDev")
-end
-
-return library
+return MineCheatLib
